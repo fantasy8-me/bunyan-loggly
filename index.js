@@ -18,11 +18,7 @@ function Bunyan2Loggly (logglyConfig, buffer) {
 	this.logglyConfig.tags.push('https');
 
 	// create the client
-	this.client = loggly.createClient(logglyConfig, function(err){
-		if(err){
-			console.error('Fail to send log to loggly', err);
-		}
-	});
+	this.client = loggly.createClient(logglyConfig);
 
 }
 
@@ -61,7 +57,11 @@ Bunyan2Loggly.prototype.checkBuffer = function () {
 	this._buffer = [];
 
 	// log multiple (or single) requests with loggly
-	this.client.log(content);
+	this.client.log(content, function(err) {
+		if (err) {
+			console.error('Fail to send log to loggly', err);
+		}
+	});
 
 };
 
