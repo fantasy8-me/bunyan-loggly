@@ -18,7 +18,11 @@ function Bunyan2Loggly (logglyConfig, buffer) {
 	this.logglyConfig.tags.push('https');
 
 	// create the client
-	this.client = loggly.createClient(logglyConfig);
+	this.client = loggly.createClient(logglyConfig, function(err){
+		if(err){
+			console.error('Fail to send log to loggly', err);
+		}
+	});
 
 }
 
